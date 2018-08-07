@@ -1,0 +1,60 @@
+{
+    "extends": ["tslint-react"],
+    "rules": {
+        "ban": false,
+        "class-name": true,
+        "curly": true,
+        "eofline": false,
+        "forin": true,
+        "indent": [ true, "spaces" ],
+        "jsdoc-format": true,
+        "jsx-no-lambda": false,
+        "jsx-no-multiline-js": false,
+        "label-position": true,
+        "max-line-length": [ true, 120 ],
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-construct": true,
+        "no-debugger": true,
+        "no-duplicate-variable": true,
+        "no-empty": true,
+        "no-eval": true,
+        "one-line": [
+            true,
+            "check-catch",
+            "check-else",
+            "check-open-brace",
+            "check-whitespace"
+        ],
+        "quotemark": [true, "single", "jsx-double"],
+        "semicolon": [true, "always"],
+        "switch-default": true,
+        "trailing-comma": [true],
+        "triple-equals": [ true, "allow-null-check", "allow-undefined-check" ],
+        "typedef": [
+            true,
+            "parameter",
+            "property-declaration"
+        ],
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            }
+        ],
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-module",
+            "check-operator",
+            "check-separator",
+            "check-type",
+            "check-typecast"
+        ]
+    }
+}
