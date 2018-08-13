@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Gallery from 'react-grid-gallery';
-import { StoryImage, GET_DUMMY_IMAGES } from '../data_layer/models/StoryImage';
+import { StoryImage } from '../data_layer/models/StoryImage';
 import { inject, observer } from '../../node_modules/mobx-react';
 import { ApplicationStore } from '../data_layer/stores/ApplicationStore';
 
@@ -17,7 +17,7 @@ export class FilteredStoriesView extends React.Component<Props> {
     }
 
     public render(): JSX.Element {
-        let images: StoryImage[] = GET_DUMMY_IMAGES();
+        let images: StoryImage[] = this.props.store!.storyStore.storiesToDisplay;
 
         // Todo: get filtered stories and build image objects out of them. 
         // See data_layer/models/StoryImage.ts for interface to use

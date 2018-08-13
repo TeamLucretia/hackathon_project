@@ -3,6 +3,7 @@ export interface StoryImage {
     thumbnail: string;
     thumbnailWidth: number;
     thumbnailHeight: number;
+    TEMP?: string;
     //todo: additional info?
 }
 
@@ -27,14 +28,21 @@ const DUMMY_IMAGES: StoryImage[] =
         thumbnailHeight: 212
     }];
 
+
+
 export function GET_DUMMY_IMAGES() {
     const images: StoryImage[] = [];
+
+    const TEMP_KEYS = ['ONE', 'TWO', 'THREE',
+        'ELEVEN', 'TWELVE', 'THIRTEEN',
+        'TWENTY-ONE', 'TWENTY-TWO', 'TWENTY-THREE'];
 
     //builds a random sort of images of different sizes to replicate the images we'll get from mia.
     for (let index = 0; index < 50; index++) {
         const img = { ...DUMMY_IMAGES[Math.floor(Math.random() * 3)] };
         img.thumbnailWidth = Math.floor(Math.random() * 450) + 200;
         img.thumbnailHeight = Math.floor(Math.random() * 450) + 200;
+        img.TEMP = TEMP_KEYS[Math.floor(Math.random() * TEMP_KEYS.length)];
         images.push({ ...img });
     }
 
