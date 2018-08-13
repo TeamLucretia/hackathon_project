@@ -9,7 +9,9 @@ export class FilteredStoriesView extends React.Component {
 
     constructor(props: {}) {
         super(props);
-        //todo: get filtered stories and build image objects out of them. See DummyImages.tsx for interface to use
+        //todo: get filtered stories and build image objects out of them. 
+        //See data_layer/models/StoryImage.ts for interface to use
+
         this.images = GET_DUMMY_IMAGES();
     }
 
