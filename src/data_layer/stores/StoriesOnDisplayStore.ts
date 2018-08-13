@@ -11,7 +11,7 @@ export interface Story {
     //todo:
 }
 
-export class StoriesOnDisplayStore {
+export class StoryStore {
     @observable private _storiesToDisplay: Story[] = [];
     @observable private _storeIsReady: boolean = false;
 
@@ -33,6 +33,8 @@ export class StoriesOnDisplayStore {
         return this._storeIsReady;
     }
 
+    // Call this when we want to update filter, add switch case and update `this._storiesToDisplay` 
+    // It will re-render the FilteredStoriesView
     public filterStoriesToDisplay(filter: PhotoFilter): void {
         const allStories = this._allStories;
 

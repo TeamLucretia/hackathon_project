@@ -30,6 +30,7 @@ const DUMMY_IMAGES: StoryImage[] =
 export function GET_DUMMY_IMAGES() {
     const images: StoryImage[] = [];
 
+    //builds a random sort of images of different sizes to replicate the images we'll get from mia.
     for (let index = 0; index < 50; index++) {
         const img = { ...DUMMY_IMAGES[Math.floor(Math.random() * 3)] };
         img.thumbnailWidth = Math.floor(Math.random() * 450) + 200;

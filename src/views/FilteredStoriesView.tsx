@@ -1,26 +1,37 @@
 import * as React from 'react';
-import Gallery from 'react-grid-gallery'
+import Gallery from 'react-grid-gallery';
 import { StoryImage, GET_DUMMY_IMAGES } from '../data_layer/models/StoryImage';
+import { inject, observer } from '../../node_modules/mobx-react';
+import { ApplicationStore } from '../data_layer/stores/ApplicationStore';
 
+interface Props {
+    store?: ApplicationStore;
+}
 
-export class FilteredStoriesView extends React.Component {
+@inject('store')
+@observer
+export class FilteredStoriesView extends React.Component<Props> {
 
-    images: StoryImage[] = [];
-
-    constructor(props: {}) {
-        super(props);
-        //todo: get filtered stories and build image objects out of them. 
-        //See data_layer/models/StoryImage.ts for interface to use
-
-        this.images = GET_DUMMY_IMAGES();
+    private onPressStoryImage(photo: StoryImage) {
+        console.log(photo);
     }
 
     public render(): JSX.Element {
+        let images: StoryImage[] = GET_DUMMY_IMAGES();
+
+        // Todo: get filtered stories and build image objects out of them. 
+        // See data_layer/models/StoryImage.ts for interface to use
+
+        // ie: TODO: allows re-render on filter
+        // const stories = this.props.store!.storyStore.storiesToDisplay;
+        // const images = this.mapStoriesToStoryImage(stories);
+
+
         return (
             <div style={styles.container}>
                 <Gallery
-                    images={this.images}
-                    onClickThumbnail={(photoIndex: number) => console.log(photoIndex)}
+                    images={images}
+                    onClickThumbnail={(index: number) => this.onPressStoryImage(images[index])}
                     margin={10}
                 />
             </div >

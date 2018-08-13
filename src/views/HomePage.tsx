@@ -13,7 +13,8 @@ interface Props {
 export class HomePage extends React.Component<Props> {
 
     public render(): JSX.Element | null {
-        if (this.props.store.storiesOnDisplayStore.storeIsReady === false) {
+        // Nothing will render until we get our items from the database, could put loading screen instead of null.
+        if (this.props.store.storyStore.storeIsReady === false) {
             return null;
         }
 
@@ -36,5 +37,5 @@ const styles = {
         display: 'flex',
 
     } as React.CSSProperties
-}
+};
 
