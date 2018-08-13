@@ -1,8 +1,22 @@
 const axios = require('axios');
-const getArtStories = require('./getArtStories');
 
-const connectArtStories = () => {
-  const artStories = getArtStories();
+async function getArtStories() {
+  let artStories = {};
+  axios.get('https://artstories.artsmia.org/artstories.json'
+  ).then((response) => {
+    console.log("1. In getArtStories");
+    artStories = response.data;
+    return artStories;
+  }).catch((error) => {
+    console.log(error);
+    return {};
+  });
+};
+
+async function connectArtStories() {
+  const artStories = await getArtStories();
+  console.log('2. in connect')
+  return artStories;
 };
 
 module.exports = connectArtStories;
