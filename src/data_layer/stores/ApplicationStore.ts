@@ -1,10 +1,11 @@
-import { ExampleStore } from './ExampleStore';
-import { observable } from '../../../node_modules/mobx';
+import { StoriesOnDisplayStore } from './StoriesOnDisplayStore';
+import { observable } from 'mobx';
 
 export class ApplicationStore {
-    @observable private _exampleStore = new ExampleStore();
+    @observable
+    private _storiesOnDisplayStore = new StoriesOnDisplayStore();
 
-    public get exampleStore() {
-        return this._exampleStore;
+    public get storiesOnDisplayStore() {
+        return this._storiesOnDisplayStore;
     }
 }
