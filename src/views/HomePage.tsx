@@ -33,7 +33,6 @@ const styles = {
         left: 0,
         bottom: 0,
         right: 0,
-        backgroundColor: 'blue',
         display: 'flex',
 
     } as React.CSSProperties
