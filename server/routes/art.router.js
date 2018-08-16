@@ -20,7 +20,7 @@ async function connectArtStories() {
     console.log(piece);
     let pieceInfo = {};
     pieceInfo.id = piece;
-    pieceInfo.story = artStories;
+    pieceInfo.story = artStories[piece];
     try {
       // let info = await axios.get(`https://search.artsmia.org/id/${piece.id}`);
       // pieceInfo.info = info.data
