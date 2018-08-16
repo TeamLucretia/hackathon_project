@@ -15,13 +15,33 @@ async function getArtStories() {
 async function connectArtStories() {
   const artStories = await getArtStories();
   console.log('2. in connect')
-  return artStories;
+  let art = [];
+  for (piece in artStories) {
+    console.log(piece);
+    let pieceInfo = {};
+    pieceInfo.id = piece;
+    pieceInfo.story = artStories;
+    try {
+      // let info = await axios.get(`https://search.artsmia.org/id/${piece.id}`);
+      // pieceInfo.info = info.data
+    } catch (error) {
+      console.log(error);
+    }
+    art.push(pieceInfo);
+  }
+  console.log(art);
+  return art;
 };
 
 router.get('/', async function (req, res) {
-  const art = await connectArtStories();
-  console.log('3. got art stories')
-  res.send(art);
+  try {
+    const art = await connectArtStories();
+    console.log('3. got art stories')
+    res.send(art);
+  } catch (error) {
+    console.log(error);
+    res.send(500);
+  }
 });
 
 module.exports = router;
