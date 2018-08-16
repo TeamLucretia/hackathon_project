@@ -12,6 +12,16 @@ async function getArtStories() {
   }
 };
 
+async function getArtInfo(id) {
+  try {
+    let artInfo = await axios.get(`https://search.artsmia.org/id/${id}`);
+    return artInfo.data;
+  } catch (error) {
+    console.log(error);
+    return {};
+  }
+};
+
 async function connectArtStories() {
   const artStories = await getArtStories();
   console.log('2. in connect')
@@ -21,6 +31,7 @@ async function connectArtStories() {
     let pieceInfo = {};
     pieceInfo.id = piece;
     pieceInfo.story = artStories[piece];
+    pieceInfo.info = await getArtInfo(piece);
     try {
       // let info = await axios.get(`https://search.artsmia.org/id/${piece.id}`);
       // pieceInfo.info = info.data
