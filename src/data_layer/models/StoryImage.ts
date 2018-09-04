@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export interface StoryImage {
     src: string;
     thumbnail: string;
@@ -28,9 +30,21 @@ const DUMMY_IMAGES: StoryImage[] =
         thumbnailHeight: 212
     }];
 
-
+export async function getImages() {
+    console.log('hello??')
+    const images: StoryImage[] = [];
+    const result = await axios.get('/api/art')
+    .then(function (response) {
+        return response.data;
+    }).catch(function (error) {
+        console.log(error);
+    });
+    console.log(result);
+    console.log(images);
+}
 
 export function GET_DUMMY_IMAGES() {
+    getImages();
     const images: StoryImage[] = [];
 
     const TEMP_KEYS = ['ONE', 'TWO', 'THREE',
