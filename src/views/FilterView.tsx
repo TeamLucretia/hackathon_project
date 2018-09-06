@@ -19,13 +19,34 @@ interface State {
 @inject('store')
 @observer
 export class FilterView extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.addFilter = this.addFilter.bind(this);
+    this.removeFilter = this.removeFilter.bind(this);
+    this.updateFilter = this.updateFilter.bind(this);
+    this.renderFilterSelection = this.renderFilterSelection.bind(this);
+    this.renderFilterSet = this.renderFilterSet.bind(this);
+  }
   public state: State = {
     selectedFilters: []
   };
 
-  public addFilter(filter: SelectedFilter): void {}
+  public addFilter(filter: SelectedFilter): void {
+    this.setState(prevState => ({
+      selectedFilters: [...prevState.selectedFilters, filter]
+    }));
+    this.updateFilter();
+  }
 
-  public removeFilter(filter: SelectedFilter): void {}
+  public removeFilter(filter: SelectedFilter): void {
+    const existingFilters = this.state.selectedFilters;
+    this.setState({
+      selectedFilters: existingFilters.filter(
+        filterCheck => filterCheck.filter !== filter.filter
+      )
+    });
+    this.updateFilter();
+  }
 
   public removeAllFilters(): void {}
 
@@ -35,12 +56,31 @@ export class FilterView extends React.Component<Props, State> {
     ]);
   }
 
-  public renderFilterSelection(
-    filter: string,
-    selection: string,
-    available: boolean
-  ) {
-    return <div>{selection}</div>;
+  public renderFilterSelection(filter: string, selection: string) {
+    const existingFilterOfType = this.state.selectedFilters.find(
+      selectedFilter => selectedFilter.filter === filter
+    );
+    const selected = existingFilterOfType
+      ? existingFilterOfType.selection === selection
+      : false;
+    return (
+      <div key={selection}>
+        <input
+          type="checkbox"
+          checked={selected}
+          onChange={
+            selected
+              ? () => {
+                  this.removeFilter({ filter, selection });
+                }
+              : () => {
+                  this.addFilter({ filter, selection });
+                }
+          }
+        />
+        {selection}
+      </div>
+    );
   }
 
   public renderFilterSet(filterSet: FilterSet) {
@@ -49,23 +89,27 @@ export class FilterView extends React.Component<Props, State> {
         filterSet.filter
       )
     ).sort();
+    /*
     const unavailableFilterSelections: string[] = Array.from(
       filterSet.filterValues
     )
       .filter(value => !availableFilterSelections.includes(value))
       .sort();
+    */
     return (
-      <div>
+      <div key={filterSet.filter}>
         <div>
           <p>{filterSet.filter.toUpperCase()}</p>
         </div>
         <div>
           {availableFilterSelections.map(value =>
-            this.renderFilterSelection(filterSet.filter, value, true)
+            this.renderFilterSelection(filterSet.filter, value)
           )}
+          {/*
           {unavailableFilterSelections.map(value =>
             this.renderFilterSelection(filterSet.filter, value, false)
           )}
+          */}
         </div>
       </div>
     );
@@ -114,8 +158,8 @@ export class FilterView extends React.Component<Props, State> {
     return (
       <div
         style={{
-          width: 200,
-          backgroundColor: '#00000011',
+          width: 240,
+          backgroundColor: 'white',
           paddingTop: 20
         }}
       >

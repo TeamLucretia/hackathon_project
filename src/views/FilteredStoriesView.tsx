@@ -19,7 +19,6 @@ export class FilteredStoriesView extends React.Component<Props> {
 
   public render(): JSX.Element {
     let images: StoryImage[] = this.props.store!.storyStore.storiesToDisplay;
-    console.log(images);
 
     // Todo: get filtered stories and build image objects out of them.
     // See data_layer/models/StoryImage.ts for interface to use
