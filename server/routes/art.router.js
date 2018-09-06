@@ -4,18 +4,6 @@ const axios = require('axios');
 const Promise = require('bluebird');
 
 async function getArtStories() {
-  try {
-    const artStories = await axios.get(
-      'https://artstories.artsmia.org/artstories.json'
-    );
-    return artStories.data.objects;
-  } catch (error) {
-    console.log(error);
-    return {};
-  }
-}
-
-async function newGetArtStories() {
   return axios
     .get('https://artstories.artsmia.org/artstories.json')
     .then(response => response.data.objects)
@@ -25,8 +13,6 @@ async function newGetArtStories() {
       return {};
     });
 }
-
-async function newGetArtInfo(id) {}
 
 async function getArtInfo(id) {
   try {
@@ -39,23 +25,28 @@ async function getArtInfo(id) {
 }
 
 async function connectArtStories() {
-  const artStories = await getArtStories();
-  const newArtStories = await newGetArtStories();
-  let art = [];
-  for (piece in artStories) {
-    let pieceInfo = {};
-    pieceInfo.id = piece;
-    pieceInfo.story = artStories[piece];
-    pieceInfo.info = await getArtInfo(piece);
-    try {
-      // let info = await axios.get(`https://search.artsmia.org/id/${piece.id}`);
-      // pieceInfo.info = info.data
-    } catch (error) {
-      console.log(error);
+  const artStoryArray = await getArtStories();
+  const artInfo = Promise.map(
+    artStoryArray,
+    async function(story) {
+      const info = await getArtInfo(story.id);
+      return {
+        id: story.id,
+        title: story.title,
+        description: story.description,
+        thumbnailURL: `https://cdn.dx.artsmia.org/thumbs/tn_${
+          story.views[0].image
+        }`,
+        continent: info.continent,
+        country: info.country,
+        onView: info.room !== 'Not on View'
+      };
+    },
+    {
+      concurrency: 10
     }
-    art.push(pieceInfo);
-  }
-  return art;
+  );
+  return artInfo;
 }
 
 router.get('/', async function(req, res) {
