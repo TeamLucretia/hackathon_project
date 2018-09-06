@@ -40,7 +40,7 @@ async function connectArtStories() {
         description: story.description,
         thumbnailURL: `https://cdn.dx.artsmia.org/thumbs/tn_${
           story.views[0].image
-        }`,
+        }.jpg`,
         continent: info.continent,
         country: info.country,
         onView: info.room !== 'Not on View'
