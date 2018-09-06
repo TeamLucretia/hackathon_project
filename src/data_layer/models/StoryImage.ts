@@ -46,12 +46,10 @@ const DUMMY_IMAGES: StoryImage[] = [
 
 export async function getImages() {
   console.log('hello??');
-  const result = await axios
+  const result: ResponseObject[] = await axios
     .get('/api/art')
-    .then(function(response) {
-      return response.data;
-    })
-    .catch(function(error) {
+    .then((response: any) => response.data)
+    .catch(function(error: any) {
       console.log(error);
     });
   console.log(result);
