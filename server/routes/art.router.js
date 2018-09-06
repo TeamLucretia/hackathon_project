@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const Promise = require('bluebird');
 
 async function getArtStories() {
   try {
-    const artStories = await axios.get('https://artstories.artsmia.org/artstories.json');
+    const artStories = await axios.get(
+      'https://artstories.artsmia.org/artstories.json'
+    );
     return artStories.data.objects;
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return {};
   }
-};
+}
+
+async function newGetArtStories() {}
+
+async function newGetArtInfo(id) {}
 
 async function getArtInfo(id) {
   try {
@@ -20,7 +27,7 @@ async function getArtInfo(id) {
     console.log(error);
     return {};
   }
-};
+}
 
 async function connectArtStories() {
   const artStories = await getArtStories();
@@ -39,9 +46,9 @@ async function connectArtStories() {
     art.push(pieceInfo);
   }
   return art;
-};
+}
 
-router.get('/', async function (req, res) {
+router.get('/', async function(req, res) {
   try {
     const art = await connectArtStories();
     res.send(art);
