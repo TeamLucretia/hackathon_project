@@ -4,14 +4,18 @@ const axios = require('axios');
 const Promise = require('bluebird');
 
 async function getArtStories() {
-  return axios
-    .get('https://artstories.artsmia.org/artstories.json')
-    .then(response => response.data.objects)
-    .then(artStories => Object.keys(artStories).map(key => artStories[key]))
-    .catch(error => {
-      console.log(error);
-      return {};
-    });
+  return (
+    axios
+      .get('https://artstories.artsmia.org/artstories.json')
+      .then(response => response.data.objects)
+      // MIA returns object with ref. numbers as keys.
+      .then(artStories => Object.keys(artStories).map(key => artStories[key]))
+      // Returns as array. Keys are already stored as story.id, so unnecessary.
+      .catch(error => {
+        console.log(error);
+        return {};
+      })
+  );
 }
 
 async function getArtInfo(id) {
@@ -43,7 +47,7 @@ async function connectArtStories() {
       };
     },
     {
-      concurrency: 10
+      concurrency: 20
     }
   );
   return artInfo;
