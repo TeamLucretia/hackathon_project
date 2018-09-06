@@ -26,6 +26,7 @@ export class StoryStore {
 
   constructor() {
     getImages().then(result => {
+      console.log(result);
       this._allStories = result;
       this._storeIsReady = true;
     });
