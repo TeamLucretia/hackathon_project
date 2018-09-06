@@ -58,11 +58,13 @@ export class StoryStore {
   public filterStoriesToDisplay(checkedFilters: SelectedFilter[]): void {
     this._storiesToDisplay = this._allStories.filter(story => {
       let matchesAllFilters: boolean = true;
-      const index: number = 0;
+      let index: number = 0;
       while (matchesAllFilters && index < checkedFilters.length) {
+        console.log(index);
         const currentFilter: SelectedFilter = checkedFilters[index];
         matchesAllFilters =
           story[currentFilter.filter] === currentFilter.selection;
+        index++;
       }
       return matchesAllFilters;
     });

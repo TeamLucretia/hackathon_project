@@ -50,7 +50,9 @@ async function connectArtStories() {
         medium: info.medium,
         classification: info.classification,
         style: info.style,
-        onView: info.room !== 'Not on View'
+        onView: info.room !== 'Not on View',
+        thumbnailHeight: info.image_height,
+        thumbnailWidth: info.image_width,
       };
     },
     {

@@ -51,6 +51,7 @@ export class FilterView extends React.Component<Props, State> {
   public removeAllFilters(): void {}
 
   public updateFilter(): void {
+    console.log(this.state);
     this.props.store!.storyStore.filterStoriesToDisplay([
       ...this.state.selectedFilters
     ]);
