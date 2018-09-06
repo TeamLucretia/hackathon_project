@@ -3,7 +3,7 @@
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": ["es2017", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -18,10 +18,5 @@
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
   },
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "webpack"
-  ]
+  "exclude": ["node_modules", "build", "scripts", "webpack"]
 }

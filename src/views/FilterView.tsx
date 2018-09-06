@@ -7,24 +7,71 @@ interface Props {
   store?: ApplicationStore;
 }
 
+export interface SelectedFilter {
+  filter: string;
+  selection: string;
+}
+
 interface State {
-  currentFilter: string;
+  selectedFilters: SelectedFilter[];
 }
 
 @inject('store')
 @observer
 export class FilterView extends React.Component<Props, State> {
   public state: State = {
-    availableFilters: []
+    selectedFilters: []
   };
 
-  public updateFilter(categoryFilter: PhotoFilter, subFilter: string): void {
-    this.props.store!.storyStore.filterStoriesToDisplay(
-      categoryFilter,
-      subFilter
+  public addFilter(filter: SelectedFilter): void {}
+
+  public removeFilter(filter: SelectedFilter): void {}
+
+  public removeAllFilters(): void {}
+
+  public updateFilter(): void {
+    this.props.store!.storyStore.filterStoriesToDisplay([
+      ...this.state.selectedFilters
+    ]);
+  }
+
+  public renderFilterSelection(
+    filter: string,
+    selection: string,
+    available: boolean
+  ) {
+    return <div>{filter}</div>;
+  }
+
+  public renderFilterSet(filterSet: FilterSet) {
+    const availableFilterSelections: string[] = Array.from(
+      this.props.store!.storyStore.getAvailableFilterSelections(
+        filterSet.filter
+      )
+    ).sort();
+    const unavailableFilterSelections: string[] = Array.from(
+      filterSet.filterValues
+    )
+      .filter(value => !availableFilterSelections.includes(value))
+      .sort();
+    return (
+      <div>
+        <div>
+          <p>{filterSet.filter.toUpperCase()}</p>
+        </div>
+        <div>
+          {availableFilterSelections.map(value =>
+            this.renderFilterSelection(filterSet.filter, value, true)
+          )}
+          {unavailableFilterSelections.map(value =>
+            this.renderFilterSelection(filterSet.filter, value, false)
+          )}
+        </div>
+      </div>
     );
   }
 
+  /*
   public renderFilterButton(cat: string, sub: string[]) {
     return (
       <div>
@@ -56,29 +103,30 @@ export class FilterView extends React.Component<Props, State> {
       </div>
     );
   }
+  */
 
   public render(): JSX.Element {
+    const allFilters = this.props.store!.storyStore.allFilterSets.sort(
+      (a, b) => {
+        return a.filter < b.filter ? -1 : 1;
+      }
+    );
     return (
       <div
         style={{
-          width: 450,
+          width: 200,
           height: '100%',
           backgroundColor: '#00000011',
-          paddingTop: 250
+          paddingTop: 20
         }}
       >
-        {this.renderFilterButton('ZERO', ['ONE', 'TWO', 'THREE'])}
-        {this.renderFilterButton('TEN', ['ELEVEN', 'TWELVE', 'THIRTEEN'])}
-        {this.renderFilterButton('TWENTY', [
-          'TWENTY-ONE',
-          'TWENTY-TWO',
-          'TWENTY-THREE'
-        ])}
+        {allFilters.map(filterSet => this.renderFilterSet(filterSet))}
       </div>
     );
   }
 }
 
+/*
 const styles = {
   mainFilterButton: {
     width: '100%',
@@ -104,3 +152,4 @@ const styles = {
     fontSize: 20
   } as React.CSSProperties
 };
+*/

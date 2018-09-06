@@ -1,9 +1,10 @@
 import { observable } from 'mobx';
 import { StoryImage, getImages } from '../models/StoryImage';
+import { SelectedFilter } from '../../views/FilterView';
 
 export interface FilterSet {
   filter: string;
-  filterValues: string[];
+  filterValues: Set<string>;
 }
 
 export const photoFilters: string[] = [
@@ -38,10 +39,14 @@ export class StoryStore {
     return this._storeIsReady;
   }
 
-  public get currentFilterSets(): FilterSet[] {
+  public getAvailableFilterSelections(filter: string): Set<string> {
+    return new Set(this._storiesToDisplay.map(story => story[filter]));
+  }
+
+  public get allFilterSets(): FilterSet[] {
     return photoFilters.map(filter => {
-      const filterValues: string[] = this._storiesToDisplay.map(
-        story => story[filter]
+      const filterValues: Set<string> = new Set(
+        this._allStories.map(story => story[filter])
       );
       return { filter, filterValues };
     });
@@ -49,17 +54,14 @@ export class StoryStore {
 
   // Call this when we want to update filter, add switch case and update `this._storiesToDisplay`
   // It will re-render the FilteredStoriesView
-  public filterStoriesToDisplay(
-    checkedFilters: { filter: string; subFilter: string }[]
-  ): void {
+  public filterStoriesToDisplay(checkedFilters: SelectedFilter[]): void {
     this._storiesToDisplay = this._allStories.filter(story => {
       let matchesAllFilters: boolean = true;
       const index: number = 0;
       while (matchesAllFilters && index < checkedFilters.length) {
-        const currentFilter: { filter: string; subFilter: string } =
-          checkedFilters[index];
+        const currentFilter: SelectedFilter = checkedFilters[index];
         matchesAllFilters =
-          story[currentFilter.filter] === currentFilter.subFilter;
+          story[currentFilter.filter] === currentFilter.selection;
       }
       return matchesAllFilters;
     });
