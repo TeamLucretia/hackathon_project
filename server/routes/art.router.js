@@ -43,6 +43,9 @@ async function connectArtStories() {
         }.jpg`,
         continent: info.continent,
         country: info.country,
+        medium: info.medium,
+        classification: info.classification,
+        style: info.style,
         onView: info.room !== 'Not on View'
       };
     },
