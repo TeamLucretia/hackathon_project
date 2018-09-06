@@ -9,6 +9,16 @@ export interface StoryImage {
   //todo: additional info?
 }
 
+interface ResponseObject {
+  id: string;
+  title: string;
+  description: string;
+  thumbnailURL: string;
+  continent: string;
+  country: string;
+  onView: boolean;
+}
+
 const DUMMY_IMAGES: StoryImage[] = [
   {
     src: 'https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg',
