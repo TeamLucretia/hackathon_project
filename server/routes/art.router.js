@@ -15,7 +15,16 @@ async function getArtStories() {
   }
 }
 
-async function newGetArtStories() {}
+async function newGetArtStories() {
+  return axios
+    .get('https://artstories.artsmia.org/artstories.json')
+    .then(response => response.data.objects)
+    .then(artStories => Object.keys(artStories).map(key => artStories[key]))
+    .catch(error => {
+      console.log(error);
+      return {};
+    });
+}
 
 async function newGetArtInfo(id) {}
 
@@ -31,6 +40,7 @@ async function getArtInfo(id) {
 
 async function connectArtStories() {
   const artStories = await getArtStories();
+  const newArtStories = await newGetArtStories();
   let art = [];
   for (piece in artStories) {
     let pieceInfo = {};
