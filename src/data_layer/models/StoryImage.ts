@@ -2,9 +2,12 @@ import axios from 'axios';
 
 export interface StoryImage {
   id: string;
+  src: string;
   title: string;
   description: string;
-  thumbnailURL: string;
+  thumbnail: string;
+  thumbnailWidth: number;
+  thumbnailHeight: number;
   continent: string;
   country: string;
   medium: string;

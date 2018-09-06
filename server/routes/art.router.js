@@ -34,13 +34,17 @@ async function connectArtStories() {
     artStoryArray,
     async function(story) {
       const info = await getArtInfo(story.id);
+      const src = `https://cdn.dx.artsmia.org/thumbs/tn_${
+        story.views[0].image
+      }.jpg`;
       return {
+        src,
         id: story.id,
         title: story.title,
         description: story.description,
-        thumbnailURL: `https://cdn.dx.artsmia.org/thumbs/tn_${
-          story.views[0].image
-        }.jpg`,
+        thumbnail: src,
+        thumbnailWidth: 200,
+        thumbnailHeight: 200,
         continent: info.continent,
         country: info.country,
         medium: info.medium,

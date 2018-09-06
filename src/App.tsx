@@ -8,26 +8,26 @@ import { HomePage } from './views/HomePage';
 const store = new ApplicationStore();
 
 type Props = {
-    store?: ApplicationStore;
+  store?: ApplicationStore;
 };
 
 class App extends React.Component<Props> {
-    render() {
-        return (
-            <div style={fullContainer}>
-                <Provider store={store} >
-                    <Router >
-                        <Route exact={true} path="/home" component={HomePage} />
-                    </Router>
-                </Provider >
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div style={fullContainer}>
+        <Provider store={store}>
+          <Router>
+            <Route exact={true} path="/home" component={HomePage} />
+          </Router>
+        </Provider>
+      </div>
+    );
+  }
 }
 
 export default App;
 
 const fullContainer = {
-    height: '100%',
-    width: '100%',
+  height: '100%',
+  width: '100%'
 };

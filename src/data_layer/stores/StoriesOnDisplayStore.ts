@@ -10,7 +10,6 @@ export interface FilterSet {
 export const photoFilters: string[] = [
   'continent',
   'country',
-  'medium',
   'classification',
   'style',
   'onView'
@@ -28,6 +27,7 @@ export class StoryStore {
     getImages().then(result => {
       console.log(result);
       this._allStories = result;
+      this._storiesToDisplay = result;
       this._storeIsReady = true;
     });
   }

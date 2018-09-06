@@ -40,7 +40,7 @@ export class FilterView extends React.Component<Props, State> {
     selection: string,
     available: boolean
   ) {
-    return <div>{filter}</div>;
+    return <div>{selection}</div>;
   }
 
   public renderFilterSet(filterSet: FilterSet) {
@@ -115,7 +115,6 @@ export class FilterView extends React.Component<Props, State> {
       <div
         style={{
           width: 200,
-          height: '100%',
           backgroundColor: '#00000011',
           paddingTop: 20
         }}
