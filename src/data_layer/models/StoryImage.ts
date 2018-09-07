@@ -13,7 +13,7 @@ export interface StoryImage {
   medium: string;
   classification: string;
   style: string;
-  onView: boolean;
+  onView: string;
 }
 
 export function getImages(): Promise<StoryImage[]> {
