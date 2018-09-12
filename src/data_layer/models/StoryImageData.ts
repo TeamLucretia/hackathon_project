@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
-export interface StoryImage {
+export interface StoryImageData {
   id: string;
   src: string;
   title: string;
@@ -16,11 +16,11 @@ export interface StoryImage {
   onView: string;
 }
 
-export function getImages(): Promise<StoryImage[]> {
+export function getImageData(): Promise<StoryImageData[]> {
   return axios
     .get('/api/art')
-    .then((response: any) => response.data)
-    .catch((error: any) => {
+    .then((response: AxiosResponse) => response.data)
+    .catch((error: AxiosError) => {
       console.log(error);
       return [];
     });
