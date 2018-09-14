@@ -26,10 +26,10 @@ const styles = {
   container: {
     position: 'absolute',
     top: 0,
-    left: 250,
+    left: '12rem',
     bottom: 0,
     right: 0,
     backgroundColor: 'white',
-    padding: 25
+    padding: '1rem'
   } as React.CSSProperties
 };

@@ -40,15 +40,25 @@ export class HomePage extends React.Component<Props, State> {
       imageData,
       isLoaded: true
     });
-    this.allFilters = this.determineAllFilters();
   }
 
-  private determineAllFilters(): FilterMap {
+  private determineAllFilters(imageData: StoryImageData[]): FilterMap {
     const allFilters: FilterMap = new Map();
     Object.keys(FilterKey).forEach(key => {
-      const selectionSet: Set<string> = new Set(
-        this.state.imageData.map(story => story[FilterKey[key]])
-      );
+      const selectionSet: Set<string> = new Set();
+      imageData.forEach(story => {
+        const property = story[FilterKey[key]];
+        if (property) {
+          // eliminates empty string, undefined, null
+          if (typeof property === 'string') {
+            selectionSet.add(property);
+          } else if (Array.isArray(property)) {
+            property.forEach(element => {
+              selectionSet.add(element);
+            });
+          }
+        }
+      });
       allFilters.set(FilterKey[key], selectionSet);
     });
     return allFilters;
@@ -78,7 +88,13 @@ export class HomePage extends React.Component<Props, State> {
     return this.state.imageData.filter(story => {
       let visible = true;
       for (let [filter, selection] of this.state.activeFilters) {
-        if (story[filter] != selection) {
+        const element = story[filter];
+        if (typeof element === 'string') {
+          visible = element === selection ? visible : false;
+        } else if (Array.isArray(element)) {
+          visible = element.includes(selection) ? visible : false;
+        } else {
+          // element is undefined or null
           visible = false;
         }
       }
@@ -88,14 +104,14 @@ export class HomePage extends React.Component<Props, State> {
 
   private setContent(): JSX.Element {
     return !this.state.isLoaded ? (
-      <h2>Loading image data...</h2>
-    ) : this.state.imageData.length > 0 ? (
-      <h2>Failed to load image data.</h2>
+      <h1 style={styles.header}>Loading image data...</h1>
+    ) : this.state.imageData.length === 0 ? (
+      <h1 style={styles.header}>Failed to load image data.</h1>
     ) : (
       <React.Fragment>
         <AllFiltersView
           activeFilters={this.state.activeFilters}
-          allFilters={this.allFilters}
+          allFilters={this.determineAllFilters(this.state.imageData)}
           addFilter={this.addFilter}
           removeFilter={this.removeFilter}
           removeAllFilters={this.removeAllFilters}
@@ -112,14 +128,10 @@ export class HomePage extends React.Component<Props, State> {
 
 const styles = {
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
     display: 'flex'
   } as React.CSSProperties,
-  subHeader: {
-    textAlign: 'center'
+  header: {
+    textAlign: 'center',
+    fontSize: '1.5rem'
   }
 };

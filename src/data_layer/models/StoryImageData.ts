@@ -11,8 +11,8 @@ export interface StoryImageData {
   continent: string;
   country: string;
   medium: string;
-  classification: string;
-  style: string;
+  classification: string[];
+  century: string[];
   onView: string;
 }
 

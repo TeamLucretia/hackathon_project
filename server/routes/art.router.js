@@ -28,6 +28,56 @@ async function getArtInfo(id) {
   }
 }
 
+function parseClassification(text) {
+  return text
+    ? text
+        .split(';')
+        .map(entry => entry.trim())
+        .filter(entry => entry)
+    : [];
+}
+
+function parseStyle(text) {
+  const singleCenturyBCE = /^\d+(st|nd|rd|th)\scentury\sBCE$/i;
+  const singleCenturyAD = /^\d+(st|nd|rd|th)\scentury$/i;
+  if (!text) {
+    return [];
+  } else if (singleCenturyBCE.test(text) || singleCenturyAD.test(text)) {
+    return [text];
+  } else {
+    const isBCE = /BCE/.test(text);
+    const centuryRange = text
+      .match(/\d+/g)
+      .map(str => parseInt(str))
+      .sort((a, b) => a - b);
+    const centuryArray = [];
+    for (let i = centuryRange[0]; i <= centuryRange[1]; i++) {
+      let ordinal;
+      if (i === 11 || i === 12 || i === 13) {
+        ordinal = 'th';
+      } else {
+        switch (i % 10) {
+          case 1:
+            ordinal = 'st';
+            break;
+          case 2:
+            ordinal = 'nd';
+            break;
+          case 3:
+            ordinal = 'rd';
+            break;
+          default:
+            ordinal = 'th';
+        }
+      }
+      const centuryName =
+        i.toString() + ordinal + ' century' + (isBCE ? ' BCE' : '');
+      centuryArray.push(centuryName);
+    }
+    return centuryArray;
+  }
+}
+
 async function connectArtStories() {
   const artStoryArray = await getArtStories();
   const artInfo = Promise.map(
@@ -37,22 +87,26 @@ async function connectArtStories() {
       const src = `https://cdn.dx.artsmia.org/thumbs/tn_${
         story.views[0].image
       }.jpg`;
+      // info.classification can contain multiple entries, one entry, or none
+      // (undefined).
+      // info.style can be one century, two centuries, a range of centuries, or
+      // none (undefined).
+      // Thumbnail size is also sometimes undefined.
+      // These need to be parsed.
       return {
         src,
         id: story.id,
         title: story.title,
         description: story.description,
         thumbnail: src,
-        thumbnailWidth: 200,
-        thumbnailHeight: 200,
+        thumbnailHeight: info.image_height || 200,
+        thumbnailWidth: info.image_width || 200,
         continent: info.continent,
         country: info.country,
         medium: info.medium,
-        classification: info.classification,
-        style: info.style,
-        onView: (info.room !== 'Not on View').toString(),
-        thumbnailHeight: info.image_height,
-        thumbnailWidth: info.image_width,
+        classification: parseClassification(info.classification),
+        century: parseStyle(info.style),
+        onView: info.room !== 'Not on View' ? 'On View' : 'Not On View'
       };
     },
     {

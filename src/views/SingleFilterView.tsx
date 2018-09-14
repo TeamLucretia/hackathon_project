@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { FilterKey } from '../data_layer/models/Filters';
 import { SingleSelectionView } from './SingleSelectionView';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
+  key: FilterKey;
   filter: FilterKey;
   activeFilter: string | null;
   selectionSet: Set<string>;
@@ -19,6 +22,7 @@ export const SingleFilterView = (props: Props): JSX.Element => {
     const isInactive = !!props.activeFilter && !isChecked;
     componentArray.push(
       <SingleSelectionView
+        key={selection}
         filter={props.filter}
         isChecked={isChecked}
         isInactive={isInactive}
@@ -29,7 +33,9 @@ export const SingleFilterView = (props: Props): JSX.Element => {
     );
   }
   return (
-    <div style={styles.filterUnit} key={props.filter}>
+    <div style={styles.filterUnit}>
+      <FontAwesomeIcon icon={faCaretRight} />
+      {props.filter}
       {componentArray}
     </div>
   );
@@ -37,6 +43,6 @@ export const SingleFilterView = (props: Props): JSX.Element => {
 
 const styles = {
   filterUnit: {
-    backgroundColor: 'white'
+    width: '100%'
   } as React.CSSProperties
 };

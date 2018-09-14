@@ -2,7 +2,7 @@ export enum FilterKey {
   CLASSIFICATION = 'classification',
   CONTINENT = 'continent',
   COUNTRY = 'country',
-  STYLE = 'style',
+  CENTURY = 'century',
   ONVIEW = 'onView'
 }
 

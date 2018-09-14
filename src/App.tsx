@@ -5,20 +5,21 @@ import { HomePage } from './views/HomePage';
 
 type Props = {};
 
-class App extends React.Component<Props> {
-  render() {
-    return (
-      <div style={fullContainer}>
-        <Router>
-          <Route exact={true} path="/" component={HomePage} />
-        </Router>
-      </div>
-    );
-  }
-}
+const App = (props: Props): JSX.Element => {
+  return (
+    <div style={styles.fullContainer}>
+      <Router>
+        <Route exact={true} path="/" component={HomePage} />
+      </Router>
+    </div>
+  );
+};
 
 export default App;
 
-const fullContainer = {
-  width: '100%'
+const styles = {
+  fullContainer: {
+    position: 'relative',
+    width: '100%'
+  } as React.CSSProperties
 };
