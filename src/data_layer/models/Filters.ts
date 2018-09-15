@@ -3,7 +3,7 @@ export enum FilterKey {
   CONTINENT = 'continent',
   COUNTRY = 'country',
   CENTURY = 'century',
-  ONVIEW = 'onView'
+  DISPLAY = 'display'
 }
 
 export type FilterMap = Map<FilterKey, Set<string>>;

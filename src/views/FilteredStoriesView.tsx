@@ -26,7 +26,7 @@ const styles = {
   container: {
     position: 'absolute',
     top: 0,
-    left: '12rem',
+    left: '13rem',
     bottom: 0,
     right: 0,
     backgroundColor: 'white',

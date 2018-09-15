@@ -13,14 +13,39 @@ interface Props {
   removeFilter(filter: FilterKey): void;
 }
 
-// TODO: Add label, dropdown icon/functionality, styling; sort selections
+function centurySort(a: string, b: string): number {
+  const aIsBCE = /BCE/.test(a);
+  const bIsBCE = /BCE/.test(b);
+  const aDigit = a.match(/\d+/);
+  const bDigit = b.match(/\d+/);
+  if (aDigit && bDigit) {
+    if (aIsBCE && bIsBCE) {
+      return parseInt(aDigit[0]) - parseInt(bDigit[0]);
+    } else if (!aIsBCE && !bIsBCE) {
+      return parseInt(bDigit[0]) - parseInt(aDigit[0]);
+    } else if (aIsBCE) {
+      return 1;
+    } else if (bIsBCE) {
+      return -1;
+    }
+  }
+  return 0;
+}
 
 export const SingleFilterView = (props: Props): JSX.Element => {
-  const componentArray: JSX.Element[] = [];
-  for (let selection of props.selectionSet) {
+  let sortedSelections: string[];
+  const selectionArray: string[] = Array.from(props.selectionSet);
+  if (props.filter === FilterKey.CENTURY) {
+    sortedSelections = selectionArray.sort(centurySort);
+  } else if (props.filter === FilterKey.DISPLAY) {
+    sortedSelections = ['On View', 'Not On View'];
+  } else {
+    sortedSelections = selectionArray.sort();
+  }
+  const componentArray: JSX.Element[] = sortedSelections.map(selection => {
     const isChecked = selection === props.activeFilter;
     const isInactive = !!props.activeFilter && !isChecked;
-    componentArray.push(
+    return (
       <SingleSelectionView
         key={selection}
         filter={props.filter}
@@ -31,18 +56,32 @@ export const SingleFilterView = (props: Props): JSX.Element => {
         removeFilter={props.removeFilter}
       />
     );
-  }
+  });
+
+  // TODO: Animate caret, list; sort; style
+
   return (
-    <div style={styles.filterUnit}>
-      <FontAwesomeIcon icon={faCaretRight} />
-      {props.filter}
+    <fieldset style={styles.filterFieldset}>
+      <legend style={styles.filterLegend}>
+        <FontAwesomeIcon icon={faCaretRight} />
+        <span style={styles.filterLegendText}>{props.filter}</span>
+      </legend>
       {componentArray}
-    </div>
+    </fieldset>
   );
 };
 
 const styles = {
-  filterUnit: {
-    width: '100%'
-  } as React.CSSProperties
+  filterFieldset: {
+    width: '100%',
+    marginTop: '0.25rem',
+    border: 0
+  } as React.CSSProperties,
+  filterLegend: {
+    textTransform: 'capitalize',
+    border: 0
+  } as React.CSSProperties,
+  filterLegendText: {
+    marginLeft: '0.25rem'
+  }
 };

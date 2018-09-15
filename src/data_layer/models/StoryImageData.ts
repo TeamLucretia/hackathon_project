@@ -13,7 +13,7 @@ export interface StoryImageData {
   medium: string;
   classification: string[];
   century: string[];
-  onView: string;
+  display: string;
 }
 
 export function getImageData(): Promise<StoryImageData[]> {

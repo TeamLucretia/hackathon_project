@@ -18,6 +18,9 @@ export const SingleSelectionView = (props: Props): JSX.Element => {
     <div style={styles.filterSelection}>
       <input
         type="checkbox"
+        style={styles.filterCheckbox}
+        name={props.selection}
+        id={props.selection}
         checked={props.isChecked}
         onChange={
           props.isChecked
@@ -29,12 +32,24 @@ export const SingleSelectionView = (props: Props): JSX.Element => {
               }
         }
       />
+      <label style={styles.filterLabel} htmlFor={props.selection}>
+        {props.selection}
+      </label>
     </div>
   );
 };
 
 const styles = {
   filterSelection: {
-    backgroundColor: 'white'
-  } as React.CSSProperties
+    backgroundColor: 'white',
+    display: 'flex'
+  } as React.CSSProperties,
+  filterCheckbox: {
+    backgroundColor: 'white',
+    margin: '0.15rem'
+  } as React.CSSProperties,
+  filterLabel: {
+    backgroundColor: 'white',
+    fontSize: '0.9rem'
+  }
 };

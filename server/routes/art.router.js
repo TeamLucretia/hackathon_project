@@ -106,7 +106,7 @@ async function connectArtStories() {
         medium: info.medium,
         classification: parseClassification(info.classification),
         century: parseStyle(info.style),
-        onView: info.room !== 'Not on View' ? 'On View' : 'Not On View'
+        display: info.room !== 'Not on View' ? 'On View' : 'Not On View'
       };
     },
     {
