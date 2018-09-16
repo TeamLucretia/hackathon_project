@@ -5,13 +5,11 @@ interface Props {
   key: string;
   filter: FilterKey;
   isChecked: boolean;
-  isInactive: boolean;
+  frequency: number;
   selection: string;
   addFilter(filter: FilterKey, selection: string): void;
   removeFilter(filter: FilterKey): void;
 }
-
-// TODO: Add label text, styling, sort
 
 export const SingleSelectionView = (props: Props): JSX.Element => {
   return (
@@ -22,6 +20,7 @@ export const SingleSelectionView = (props: Props): JSX.Element => {
         name={props.selection}
         id={props.selection}
         checked={props.isChecked}
+        disabled={props.frequency === 0}
         onChange={
           props.isChecked
             ? () => {
@@ -32,8 +31,18 @@ export const SingleSelectionView = (props: Props): JSX.Element => {
               }
         }
       />
-      <label style={styles.filterLabel} htmlFor={props.selection}>
+      <label
+        style={
+          props.frequency === 0
+            ? styles.filterLabelInactive
+            : styles.filterLabelActive
+        }
+        htmlFor={props.selection}
+      >
         {props.selection}
+        {' ('}
+        {props.frequency}
+        {')'}
       </label>
     </div>
   );
@@ -45,11 +54,13 @@ const styles = {
     display: 'flex'
   } as React.CSSProperties,
   filterCheckbox: {
-    backgroundColor: 'white',
     margin: '0.15rem'
   } as React.CSSProperties,
-  filterLabel: {
-    backgroundColor: 'white',
+  filterLabelActive: {
     fontSize: '0.9rem'
-  }
+  } as React.CSSProperties,
+  filterLabelInactive: {
+    fontSize: '0.9rem',
+    color: 'gray'
+  } as React.CSSProperties
 };

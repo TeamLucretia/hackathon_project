@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { FilterKey } from '../data_layer/models/Filters';
 import { SingleSelectionView } from './SingleSelectionView';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   key: FilterKey;
   filter: FilterKey;
   activeFilter: string | null;
-  selectionSet: Set<string>;
+  selectionMap: Map<string, number>;
   addFilter(filter: FilterKey, selection: string): void;
   removeFilter(filter: FilterKey): void;
 }
@@ -33,37 +31,47 @@ function centurySort(a: string, b: string): number {
 }
 
 export const SingleFilterView = (props: Props): JSX.Element => {
-  let sortedSelections: string[];
-  const selectionArray: string[] = Array.from(props.selectionSet);
-  if (props.filter === FilterKey.CENTURY) {
-    sortedSelections = selectionArray.sort(centurySort);
-  } else if (props.filter === FilterKey.DISPLAY) {
-    sortedSelections = ['On View', 'Not On View'];
-  } else {
-    sortedSelections = selectionArray.sort();
-  }
-  const componentArray: JSX.Element[] = sortedSelections.map(selection => {
-    const isChecked = selection === props.activeFilter;
-    const isInactive = !!props.activeFilter && !isChecked;
-    return (
-      <SingleSelectionView
-        key={selection}
-        filter={props.filter}
-        isChecked={isChecked}
-        isInactive={isInactive}
-        selection={selection}
-        addFilter={props.addFilter}
-        removeFilter={props.removeFilter}
-      />
-    );
-  });
+  let sortedSelections: string[] = Array.from(props.selectionMap.keys()).sort(
+    (a: string, b: string) => {
+      const aFrequency = props.selectionMap.get(a);
+      const bFrequency = props.selectionMap.get(b);
+      if (aFrequency === 0) {
+        return 1;
+      } else if (bFrequency === 0) {
+        return -1;
+      } else if (props.filter === FilterKey.CENTURY) {
+        return centurySort(a, b);
+      } else if (props.filter === FilterKey.DISPLAY) {
+        return a === 'On View' ? -1 : 1;
+      }
+      return a < b ? -1 : 1;
+    }
+  );
 
-  // TODO: Animate caret, list; sort; style
+  const componentArray: (JSX.Element | null)[] = sortedSelections.map(
+    selection => {
+      const isChecked = selection === props.activeFilter;
+      const frequency = props.selectionMap.get(selection)!;
+      const otherIsChecked: boolean = !!props.activeFilter && !isChecked;
+      return frequency === 0 || otherIsChecked ? null : (
+        <SingleSelectionView
+          key={selection}
+          filter={props.filter}
+          isChecked={isChecked}
+          selection={selection}
+          frequency={frequency}
+          addFilter={props.addFilter}
+          removeFilter={props.removeFilter}
+        />
+      );
+    }
+  );
+
+  // TODO: Animate caret, list; style
 
   return (
     <fieldset style={styles.filterFieldset}>
       <legend style={styles.filterLegend}>
-        <FontAwesomeIcon icon={faCaretRight} />
         <span style={styles.filterLegendText}>{props.filter}</span>
       </legend>
       {componentArray}

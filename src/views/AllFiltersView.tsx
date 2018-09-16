@@ -3,29 +3,29 @@ import { SingleFilterView } from './SingleFilterView';
 import {
   FilterKey,
   ActiveFilters,
-  FilterMap
+  ReducedFilterMap
 } from '../data_layer/models/Filters';
 
 interface Props {
   activeFilters: ActiveFilters;
-  allFilters: FilterMap;
+  reducedFilterMap: ReducedFilterMap;
   addFilter(filter: FilterKey, selection: string): void;
   removeFilter(filter: FilterKey): void;
   removeAllFilters(): void;
 }
 
-// TODO: Styling, sort categories
-
 export const AllFiltersView = (props: Props): JSX.Element => {
-  const keyArray = Array.from(props.allFilters.keys()).sort();
+  const keyArray = Array.from(props.reducedFilterMap.keys()).sort();
   const componentArray: JSX.Element[] = keyArray.map(filter => {
-    const selectionSet: Set<string> = props.allFilters.get(filter)!;
+    const selectionMap: Map<string, number> = props.reducedFilterMap.get(
+      filter
+    )!;
     return (
       <SingleFilterView
         key={filter}
         filter={filter}
         activeFilter={props.activeFilters.get(filter) || null}
-        selectionSet={selectionSet}
+        selectionMap={selectionMap}
         addFilter={props.addFilter}
         removeFilter={props.removeFilter}
       />

@@ -6,6 +6,6 @@ export enum FilterKey {
   DISPLAY = 'display'
 }
 
-export type FilterMap = Map<FilterKey, Set<string>>;
+export type ReducedFilterMap = Map<FilterKey, Map<string, number>>;
 
 export type ActiveFilters = Map<FilterKey, string>;
