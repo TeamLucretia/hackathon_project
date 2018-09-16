@@ -11,6 +11,12 @@ interface Props {
   removeFilter(filter: FilterKey): void;
 }
 
+/**
+ * Sort function specific to century filter labels.
+ * @param a {number}
+ * @param b {number}
+ * @returns {number} negative if a before b, positive if b before a.
+ */
 function centurySort(a: string, b: string): number {
   const aIsBCE = /BCE/.test(a);
   const bIsBCE = /BCE/.test(b);

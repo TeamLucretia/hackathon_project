@@ -11,7 +11,6 @@ interface Props {
   reducedFilterMap: ReducedFilterMap;
   addFilter(filter: FilterKey, selection: string): void;
   removeFilter(filter: FilterKey): void;
-  removeAllFilters(): void;
 }
 
 export const AllFiltersView = (props: Props): JSX.Element => {

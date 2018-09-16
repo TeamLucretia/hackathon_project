@@ -33,7 +33,6 @@ export class HomePage extends React.Component<Props, State> {
     this.setContent = this.setContent.bind(this);
     this.addFilter = this.addFilter.bind(this);
     this.removeFilter = this.removeFilter.bind(this);
-    this.removeAllFilters = this.removeAllFilters.bind(this);
   }
 
   async componentDidMount() {
@@ -46,6 +45,12 @@ export class HomePage extends React.Component<Props, State> {
     });
   }
 
+  /**
+   * Generates a Map of filter types (as keys) and selection strings
+   * (as values) from imageData loaded from MIA.
+   * @param imageData {StoryImageData[]}
+   * @returns {AllFilterMap} Map<FilterKey, Set<string>>
+   */
   private determineAllFilters(imageData: StoryImageData[]): AllFilterMap {
     const allFilters: AllFilterMap = new Map();
     Object.keys(FilterKey).forEach(key => {
@@ -68,6 +73,11 @@ export class HomePage extends React.Component<Props, State> {
     return allFilters;
   }
 
+  /**
+   * Adds active filter to component state. Side effect only, no return.
+   * @param filter {FilterKey}
+   * @param selection {string}
+   */
   private addFilter(filter: FilterKey, selection: string): void {
     this.setState(prevState => {
       const newFilterMap: ActiveFilters = new Map(prevState.activeFilters);
@@ -76,6 +86,10 @@ export class HomePage extends React.Component<Props, State> {
     });
   }
 
+  /**
+   * Removes active filter from component state. Side effect only, no return.
+   * @param filter {FilterKey}
+   */
   private removeFilter(filter: FilterKey): void {
     this.setState(prevState => {
       const newFilterMap: ActiveFilters = new Map(prevState.activeFilters);
@@ -84,10 +98,13 @@ export class HomePage extends React.Component<Props, State> {
     });
   }
 
-  private removeAllFilters(): void {
-    this.setState({ activeFilters: new Map() });
-  }
-
+  /**
+   * Passed currently visible stories, returns a Map of filters (as keys),
+   * selectors and number of appearances of these selectors in the stories
+   * as a child Map<selector: string, appearances: number>.
+   * @param filteredImageData
+   * @returns {ReducedFilterMap} Map<FilterKey, Map<string, number>>
+   */
   private reduceAllFilters(
     filteredImageData: StoryImageData[]
   ): ReducedFilterMap {
@@ -122,6 +139,11 @@ export class HomePage extends React.Component<Props, State> {
     return reducedFilterMap;
   }
 
+  /**
+   * Using current this.state.activeFilters, filters all imageData
+   * to show only filtered images. Accepts no parameters, returns
+   * nothing; used only for side effects.
+   */
   private filterImageData(): StoryImageData[] {
     return this.state.imageData.filter(story => {
       let visible = true;
@@ -140,6 +162,10 @@ export class HomePage extends React.Component<Props, State> {
     });
   }
 
+  /**
+   * Helper function for render() method.
+   * @returns {JSX.Element}
+   */
   private setContent(): JSX.Element {
     if (!this.state.isLoaded) {
       return <h1 style={styles.header}>Loading image data...</h1>;
@@ -157,7 +183,6 @@ export class HomePage extends React.Component<Props, State> {
           reducedFilterMap={reducedFilterMap}
           addFilter={this.addFilter}
           removeFilter={this.removeFilter}
-          removeAllFilters={this.removeAllFilters}
         />
         <FilteredStoriesView activeImageData={filteredImageData} />
       </React.Fragment>
