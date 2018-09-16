@@ -67,8 +67,6 @@ export const SingleFilterView = (props: Props): JSX.Element => {
     }
   );
 
-  // TODO: Animate caret, list; style
-
   return (
     <fieldset style={styles.filterFieldset}>
       <legend style={styles.filterLegend}>

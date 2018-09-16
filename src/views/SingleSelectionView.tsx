@@ -20,7 +20,6 @@ export const SingleSelectionView = (props: Props): JSX.Element => {
         name={props.selection}
         id={props.selection}
         checked={props.isChecked}
-        disabled={props.frequency === 0}
         onChange={
           props.isChecked
             ? () => {
