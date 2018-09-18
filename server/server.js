@@ -1,24 +1,22 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
-
-// Route includes
-const artRouter = require('./routes/art.router');
-
-// Body parser middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-/* Routes */
-app.use('/api/art', artRouter);
-
-// Serve static files
-app.use(express.static('build'));
-
-// App Set //
+const getStories = require('./modules/getstories');
 const PORT = process.env.PORT || 5000;
 
-/** Listen * */
-app.listen(PORT, () => {
-  console.log(`Listening on port: ${PORT}`);
-});
+// Initialize ArtStories data, then listen.
+async function initialize() {
+  const artStories = await getStories();
+
+  /* Routes */
+  app.use('/api/art', (req, res) => {
+    res.send(artStories);
+  });
+  // Serve static files
+  app.use(express.static('build'));
+  /* Listen */
+  app.listen(PORT, () => {
+    console.log(`Listening on port: ${PORT}`);
+  });
+}
+
+initialize();

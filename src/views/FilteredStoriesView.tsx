@@ -6,16 +6,21 @@ interface Props {
   activeImageData: StoryImageData[];
 }
 
+function onPressStory(imageID: string) {
+  const storyURL = `https://artstories.artsmia.org/#/o/${imageID}`;
+  const storyWindow = window.open(storyURL, 'Art Story');
+  storyWindow!.focus();
+}
+
 export const FilteredStoriesView = (props: Props): JSX.Element => {
   return (
     <div style={styles.container}>
       <Gallery
         images={props.activeImageData}
-        /*
-        onClickThumbnail={(index: number) =>
-          this.onPressStoryImage(images[index])
-        }
-        */
+        enableLightbox={false}
+        onClickThumbnail={(image: number) => {
+          onPressStory(props.activeImageData[image].id);
+        }}
         margin={10}
       />
     </div>
@@ -30,6 +35,7 @@ const styles = {
     bottom: 0,
     right: 0,
     backgroundColor: 'white',
-    padding: '1rem'
+    marginTop: '0.25rem',
+    padding: '0.25rem'
   } as React.CSSProperties
 };

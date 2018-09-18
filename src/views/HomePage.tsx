@@ -168,9 +168,9 @@ export class HomePage extends React.Component<Props, State> {
    */
   private setContent(): JSX.Element {
     if (!this.state.isLoaded) {
-      return <h1 style={styles.header}>Loading image data...</h1>;
+      return <h2 style={styles.message}>Loading image data...</h2>;
     } else if (this.state.imageData.length === 0) {
-      return <h1 style={styles.header}>Failed to load image data.</h1>;
+      return <h2 style={styles.message}>Failed to load image data.</h2>;
     }
     const filteredImageData: StoryImageData[] = this.filterImageData();
     const reducedFilterMap: ReducedFilterMap = this.reduceAllFilters(
@@ -190,16 +190,29 @@ export class HomePage extends React.Component<Props, State> {
   }
 
   render(): JSX.Element {
-    return <div style={styles.container}>{this.setContent()}</div>;
+    return (
+      <React.Fragment>
+        <h1 style={styles.header}>MIA ArtStories</h1>
+        <div style={styles.container}>{this.setContent()}</div>
+      </React.Fragment>
+    );
   }
 }
 
 const styles = {
-  container: {
-    display: 'flex'
-  } as React.CSSProperties,
   header: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: '2rem',
+    marginTop: '0.5rem'
+  } as React.CSSProperties,
+  container: {
+    display: 'flex',
+    position: 'relative'
+  } as React.CSSProperties,
+  message: {
+    width: '100%',
     textAlign: 'center',
     fontSize: '1.5rem'
-  }
+  } as React.CSSProperties
 };

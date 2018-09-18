@@ -46,6 +46,7 @@ const styles = {
     width: '12rem',
     height: 'auto',
     margin: '0.5rem',
+    marginTop: '1rem',
     padding: '0.25rem',
     border: '0.1rem solid black'
   } as React.CSSProperties,
