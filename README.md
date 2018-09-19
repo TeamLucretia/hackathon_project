@@ -18,3 +18,21 @@ Submission to Prime Academy Hackathon, September 6th, 2018. Introduces search/fi
 - [Andy Taton](https://github.com/tataton)
 - [Drew Wiskus](https://github.com/andrewwiskus)
 - [Jesse Wrobleski](https://github.com/Jessewroblewski)
+
+### Development Instructions
+
+This project was bootstrapped with [`create-react-app`](https://github.com/facebookincubator/create-react-app), using the TypeScript (`--scripts-version=react-scripts-ts`) flag. To start contributing, you should _not_ need to install `create-react-app` if you don't already have it. You _will_ need to install Node.js ^10.0 and `nodemon`.
+
+Once you have cloned the repository and run `npm install`, you can simulataneously develop the server and client by running
+
+```shell
+$ npm run server
+```
+
+in one terminal instance and
+
+```shell
+$ npm run client
+```
+
+in the other. This will start the server listening on port 5000, and will serve client-side React content on port 3000 (via `webpack-dev-server`), proxied to 5000. The React server will auto-open a browser to localhost:3000. Hot-reloading is enabled in both servers.
