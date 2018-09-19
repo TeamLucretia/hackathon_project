@@ -1,6 +1,7 @@
 {
   "name": "web_starter",
   "version": "0.1.0",
+  "main": "server/server.js",
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
@@ -16,15 +17,20 @@
     "typescript": "^3.0.3"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "node server/server.js",
+    "client": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "server": "nodemon --watch server server/server.js",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "heroku-postbuild": "npm run build"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
     "@types/node": "^10.10.1",
     "nodemon": "^1.18.3"
+  },
+  "engines": {
+    "node": "8.12.0"
   }
 }
